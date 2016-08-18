@@ -7,22 +7,22 @@ By Jonny Strömberg (www.jonnystromberg.com, www.listjs.com)
 "use strict";
 
 var document = window.document,
-  getByClass = require('./src/utils/get-by-class'),
-  extend = require('./src/utils/extend'),
-  indexOf = require('./src/utils/index-of'),
-  events = require('./src/utils/events'),
-  toString = require('./src/utils/to-string'),
-  naturalSort = require('./src/utils/natural-sort'),
-  classes = require('./src/utils/classes'),
-  getAttribute = require('./src/utils/get-attribute'),
-  toArray = require('./src/utils/to-array');
+  getByClass = require('../src/utils/get-by-class'),
+  extend = require('../src/utils/extend'),
+  indexOf = require('../src/utils/index-of'),
+  events = require('../src/utils/events'),
+  toString = require('../src/utils/to-string'),
+  naturalSort = require('../src/utils/natural-sort'),
+  classes = require('../src/utils/classes'),
+  getAttribute = require('../src/utils/get-attribute'),
+  toArray = require('../src/utils/to-array');
 
 var List = function(id, options, values) {
 
   var self = this,
     init,
-    Item = require('./src/item')(self),
-    addAsync = require('./src/add-async')(self);
+    Item = require('../src/item')(self),
+    addAsync = require('../src/add-async')(self);
 
   init = {
     start: function() {
@@ -58,11 +58,11 @@ var List = function(id, options, values) {
       if (!self.listContainer) { return; }
       self.list       = getByClass(self.listContainer, self.listClass, true);
 
-      self.parse      = require('./src/parse')(self);
-      self.templater  = require('./src/templater')(self);
-      self.search     = require('./src/search')(self);
-      self.filter     = require('./src/filter')(self);
-      self.sort       = require('./src/sort')(self);
+      self.parse      = require('../src/parse')(self);
+      self.templater  = require('../src/templater')(self);
+      self.search     = require('../src/search')(self);
+      self.filter     = require('../src/filter')(self);
+      self.sort       = require('../src/sort')(self);
 
       this.handlers();
       this.items();
@@ -272,7 +272,7 @@ window.List = List;
 
 })(window);
 
-},{"./src/add-async":2,"./src/filter":3,"./src/item":4,"./src/parse":5,"./src/search":6,"./src/sort":7,"./src/templater":8,"./src/utils/classes":9,"./src/utils/events":10,"./src/utils/extend":11,"./src/utils/get-attribute":12,"./src/utils/get-by-class":13,"./src/utils/index-of":14,"./src/utils/natural-sort":15,"./src/utils/to-array":16,"./src/utils/to-string":17}],2:[function(require,module,exports){
+},{"../src/add-async":2,"../src/filter":3,"../src/item":4,"../src/parse":5,"../src/search":6,"../src/sort":7,"../src/templater":8,"../src/utils/classes":9,"../src/utils/events":10,"../src/utils/extend":11,"../src/utils/get-attribute":12,"../src/utils/get-by-class":13,"../src/utils/index-of":14,"../src/utils/natural-sort":15,"../src/utils/to-array":16,"../src/utils/to-string":17}],2:[function(require,module,exports){
 module.exports = function(list) {
   var addAsync = function(values, callback, items) {
     var valuesToAdd = values.splice(0, 50);
@@ -386,7 +386,7 @@ module.exports = function(list) {
 },{}],5:[function(require,module,exports){
 module.exports = function(list) {
 
-  var Item = require('./item')(list);
+  var Item = require('item')(list);
 
   var getChildren = function(parent) {
     var nodes = parent.childNodes,
@@ -432,7 +432,7 @@ module.exports = function(list) {
   };
 };
 
-},{"./item":4}],6:[function(require,module,exports){
+},{"item":4}],6:[function(require,module,exports){
 module.exports = function(list) {
   var item,
     text,
@@ -819,7 +819,7 @@ module.exports = function(list) {
  * Module dependencies.
  */
 
-var index = require('./index-of');
+var index = require('index-of');
 
 /**
  * Whitespace regexp.
@@ -1001,11 +1001,11 @@ ClassList.prototype.contains = function(name){
   return this.list ? this.list.contains(name) : !! ~index(this.array(), name);
 };
 
-},{"./index-of":14}],10:[function(require,module,exports){
+},{"index-of":14}],10:[function(require,module,exports){
 var bind = window.addEventListener ? 'addEventListener' : 'attachEvent',
     unbind = window.removeEventListener ? 'removeEventListener' : 'detachEvent',
     prefix = bind !== 'addEventListener' ? 'on' : '',
-    toArray = require('./to-array');
+    toArray = require('to-array');
 
 /**
  * Bind `el` event `type` to `fn`.
@@ -1041,7 +1041,7 @@ exports.unbind = function(el, type, fn, capture){
   }
 };
 
-},{"./to-array":16}],11:[function(require,module,exports){
+},{"to-array":16}],11:[function(require,module,exports){
 /*
  * Source: https://github.com/segmentio/extend
  */
@@ -1184,31 +1184,31 @@ module.exports = function(a, b, opts) {
         xD = parseInt(x.match(hre), 16) || (xN.length !== 1 && Date.parse(x)),
         yD = parseInt(y.match(hre), 16) || xD && y.match(dre) && Date.parse(y) || null,
         normChunk = function(s, l) {
-           // normalize spaces; find floats not starting with '0', string or 0 if not defined (Clint Priest)
-           return (!s.match(ore) || l == 1) && parseFloat(s) || s.replace(snre, ' ').replace(sre, '') || 0;
+            // normalize spaces; find floats not starting with '0', string or 0 if not defined (Clint Priest)
+            return (!s.match(ore) || l == 1) && parseFloat(s) || s.replace(snre, ' ').replace(sre, '') || 0;
         },
         oFxNcL, oFyNcL;
-   // first try and sort Hex codes or Dates
-   if (yD) {
+    // first try and sort Hex codes or Dates
+    if (yD) {
        if (xD < yD) { return -1; }
        else if (xD > yD) { return 1; }
-   }
-   // natural sorting through split numeric strings and default strings
+    }
+    // natural sorting through split numeric strings and default strings
    for(var cLoc = 0, xNl = xN.length, yNl = yN.length, numS = Math.max(xNl, yNl); cLoc < numS; cLoc++) {
        oFxNcL = normChunk(xN[cLoc] || '', xNl);
        oFyNcL = normChunk(yN[cLoc] || '', yNl);
-       // handle numeric vs string comparison - number < string - (Kyle Adams)
+        // handle numeric vs string comparison - number < string - (Kyle Adams)
        if (isNaN(oFxNcL) !== isNaN(oFyNcL)) {
            return isNaN(oFxNcL) ? 1 : -1;
-       }
+        }
        // if unicode use locale comparison
        if (/[^\x00-\x80]/.test(oFxNcL + oFyNcL) && oFxNcL.localeCompare) {
            var comp = oFxNcL.localeCompare(oFyNcL);
            return comp / Math.abs(comp);
        }
-       if (oFxNcL < oFyNcL) { return -1; }
+        if (oFxNcL < oFyNcL) { return -1; }
        else if (oFxNcL > oFyNcL) { return 1; }
-   }
+    }
     return 0;
 };
 
